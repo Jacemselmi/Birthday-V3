@@ -3,9 +3,12 @@
 
 :root {
     --bg-dark: #1a1a2e;
-    --bg-light: #0f3460;
+    --bg-light: #16213e;
+    --bg-purple: #2d1b4e;
     --primary-red: #e94560;
     --accent-yellow: #f0e68c;
+    --accent-purple: #a855f7;
+    --accent-purple-dark: #7c3aed;
     --text-light: #ffffff;
     --envelope-body: #f7f3e9;
     --envelope-flap: #e0d9cc;
@@ -28,14 +31,39 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(45deg, var(--bg-dark), var(--bg-light));
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-purple) 40%, var(--bg-light) 100%);
     color: var(--text-light);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh; /* Use dvh for mobile viewport */
     overflow: hidden; /* Prevent scrollbars from animations */
     perspective: 1000px; /* For 3D transforms */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+/* Allow scrolling on mobile when content overflows */
+@media (max-width: 480px) {
+    body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .step {
+        height: auto;
+        min-height: 100dvh;
+    }
+    
+    .step.active {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .celebration-container {
+        overflow: visible;
+        height: auto;
+        min-height: 100%;
+    }
 }
 
 .step {
@@ -64,7 +92,7 @@ body {
 
 .action-button {
     padding: 12px 25px;
-    background-color: var(--primary-red);
+    background: linear-gradient(135deg, var(--primary-red), var(--accent-purple));
     color: var(--text-light);
     border: none;
     border-radius: 30px;
@@ -72,25 +100,33 @@ body {
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px var(--shadow-medium);
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
     letter-spacing: 0.5px;
+    /* Ensure touch-friendly minimum size */
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
 }
 
 .action-button:hover {
-    background-color: var(--button-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px var(--shadow-heavy);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+}
+
+/* Touch feedback for mobile */
+.action-button:active {
+    transform: scale(0.96);
 }
 
 /* --- Step 1: Welcome Screen --- */
 .welcome-card {
     text-align: center;
     padding: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 30px var(--shadow-heavy);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 15px 30px var(--shadow-heavy), 0 0 30px rgba(168, 85, 247, 0.1);
     max-width: 500px;
     animation: fadeIn 1s ease-out;
 }
@@ -99,8 +135,17 @@ body {
     font-family: 'Great Vibes', cursive;
     font-size: 3.5rem;
     margin-bottom: 20px;
-    color: var(--accent-yellow);
-    text-shadow: 2px 2px 5px var(--shadow-medium);
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleShimmer 3s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes titleShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .welcome-message {
@@ -115,6 +160,15 @@ body {
     text-align: center;
     animation: pulse 2s infinite;
     cursor: pointer;
+    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.15));
+    transition: transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* Eliminates 300ms tap delay on mobile */
+}
+
+/* Touch feedback for envelope */
+.envelope-container:active {
+    transform: scale(0.95);
 }
 
 .envelope {
@@ -127,7 +181,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--envelope-body);
+    background: linear-gradient(135deg, var(--envelope-body), #f0e6d6);
     border-radius: 10px;
     box-shadow: 0 8px 20px var(--shadow-medium);
 }
@@ -158,15 +212,31 @@ body {
 
 .envelope-seal {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    /* Base64 for a simple heart SVG icon (white) */
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTEyIDYuMjc1Yy01LjUwMy01LjgyOC0xNC40NDUgMi41NDctNi40NDUgOS42NDcgNC44MjcgNC44MjcgOS4xMjcgMi40NTcgMTIgMi41MjEgMi44NzMtLjA2NCA3LjE3MyAyLjMwMyAxMi0yLjUyMSAxMi03LjA4IDcuNjA4LTExLjQ4NSAyLjc1NS0xMS43OTJjLTcuOTk5LTcuMzk5LTMuMzk1LTkuNzE0LTYuNDQ1LTkuNjQ3eiIvPjwvc3ZnPg==');
-    background-size: cover;
-    top: 80px;
+    width: 50px;
+    height: 50px;
+    top: 75px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
+    background: radial-gradient(circle at 40% 35%, #c084fc, var(--accent-purple-dark));
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(124, 58, 237, 0.5), inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: sealGlow 2s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.envelope-seal::after {
+    content: '🤍';
+    font-size: 1.5rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+@keyframes sealGlow {
+    0%, 100% { box-shadow: 0 3px 10px rgba(124, 58, 237, 0.5), inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3); }
+    50% { box-shadow: 0 3px 20px rgba(168, 85, 247, 0.7), inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3); }
 }
 
 .envelope-container.open .envelope-flap {
@@ -206,22 +276,43 @@ body {
 }
 
 .letter {
-    width: 400px;
+    width: 420px;
     max-width: 100%; /* Ensure it fits smaller screens */
     background-color: var(--letter-paper);
-    color: var(--bg-dark);
-    padding: 30px;
-    border-radius: 10px;
+    color: #2d2d2d; /* Darker, more readable text */
+    padding: 35px 30px;
+    border-radius: 12px;
     box-shadow: 0 10px 20px var(--shadow-medium);
-    line-height: 1.8;
+    line-height: 2;
 }
 
 .letter p {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    font-weight: 400;
 }
-.letter p:first-child { font-weight: bold; } /* Dearest [Name], */
+.letter p:first-child { 
+    font-size: 1.3rem; 
+    font-weight: 600; 
+    color: #1a1a2e;
+}
 .letter p:last-of-type { margin-bottom: 0; }
+
+.letter-heart {
+    text-align: center;
+    font-size: 2rem;
+    margin: 12px 0 18px;
+    opacity: 0.9;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.3); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
 
 
 /* --- Step 4: Grand Celebration --- */
@@ -238,11 +329,11 @@ body {
 .celebration-card {
     text-align: center;
     padding: 30px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 20px 40px var(--shadow-heavy);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 20px 40px var(--shadow-heavy), 0 0 40px rgba(168, 85, 247, 0.1);
     max-width: 700px;
     z-index: 10; /* Ensure card is above animations */
     animation: popIn 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -261,12 +352,13 @@ body {
 
 .main-greeting {
     font-family: 'Poppins', sans-serif;
-    font-size: 2.8rem;
+    font-size: clamp(1.5rem, 6vw, 2.8rem); /* Fluid sizing */
     font-weight: 700;
     white-space: nowrap; /* Prevent text wrap during typing */
     overflow: hidden; /* Hide overflow for typewriter effect */
     border-right: 3px solid var(--accent-yellow); /* Typewriter cursor */
     animation: none; /* Handled by JS for typing */
+    max-width: 90vw; /* Prevent overflow on small screens */
 }
 
 /* Typewriter cursor animation (only for final state after typing) */
@@ -283,7 +375,7 @@ body {
 
 .recipient-name {
     font-family: 'Pacifico', cursive;
-    font-size: 4.5rem;
+    font-size: clamp(2.5rem, 10vw, 4.5rem); /* Fluid sizing */
     color: var(--accent-yellow);
     margin: 5px 0 20px;
     text-shadow: 3px 3px 8px var(--shadow-medium);
@@ -291,12 +383,17 @@ body {
 }
 
 .final-wish {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     margin-top: 25px;
-    line-height: 1.6;
+    line-height: 1.9;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 400;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    border-radius: 12px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .signature {
@@ -315,6 +412,29 @@ body {
     color: rgba(255, 255, 255, 0.6);
     font-family: 'Poppins', sans-serif;
     letter-spacing: 0.5px;
+}
+
+/* --- Candle Message (Timed Text Sequence) --- */
+.candle-message {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-top: 10px;
+    min-height: 2.2rem;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 2px 10px rgba(0,0,0,0.3);
+    transition: opacity 0.4s ease;
+    opacity: 0;
+}
+
+.candle-message.show {
+    opacity: 1;
+}
+
+.candle-message.blow-out {
+    color: #ff6b8a;
+    font-size: 1.8rem;
+    text-shadow: 0 0 30px rgba(233, 69, 96, 0.5), 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .heart-icon {
@@ -385,7 +505,7 @@ body {
     top: -15px;
 }
 .drip1 { left: 40px; display:none;}
-.drip2 { left: 127px; height: 45px; } /* Slightly longer middle drip */
+.drip2 { left: 127px; height: 45px; display: none; } /* Slightly longer middle drip */
 .drip3 { left: 210px; display: none;}
 
 .candle {
@@ -413,10 +533,47 @@ body {
 }
 
 /* Candle blow-out effect */
-.candle:hover .flame {
+.candle.blown .flame, .candle:hover .flame {
     opacity: 0;
     transform: scale(0.2) translateY(5px);
     box-shadow: none;
+}
+
+/* --- Smoke/Poof Animation for Candle Blow-out --- */
+.smoke-container {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 20;
+}
+
+.smoke-particle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle, rgba(200, 200, 200, 0.7), rgba(180, 180, 180, 0.3), transparent);
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    animation: smokePuff 0.8s ease-out forwards;
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+@keyframes smokePuff {
+    0% {
+        transform: translate(0, 0) scale(0.3);
+        opacity: 0.9;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(2.5);
+        opacity: 0;
+    }
 }
 
 @keyframes flicker {
@@ -426,6 +583,114 @@ body {
     75% { transform: scaleY(0.95) rotate(1deg); opacity: 0.95; }
 }
 
+
+/* --- Floating Hearts Animation --- */
+.floating-hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 6;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    bottom: -40px;
+    animation: floatHeart 8s ease-in forwards;
+    opacity: 0;
+}
+
+@keyframes floatHeart {
+    0% { 
+        transform: translateY(0) rotate(0deg) scale(0); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 0.8; 
+        transform: translateY(0) rotate(10deg) scale(1);
+    }
+    100% { 
+        transform: translateY(-100vh) rotate(360deg) scale(0.5); 
+        opacity: 0; 
+    }
+}
+
+/* --- Sparkles Animation --- */
+.sparkles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-yellow);
+    border-radius: 50%;
+    animation: sparkleFade 3s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--accent-yellow), 0 0 12px var(--accent-purple);
+}
+
+@keyframes sparkleFade {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sparkleBurst {
+    0% { 
+        opacity: 1; 
+        transform: translate(-50%, -50%) scale(1); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); 
+    }
+}
+
+/* --- Glow Ring Animation for Celebration Card --- */
+.celebration-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--primary-red), var(--accent-yellow), var(--accent-purple));
+    background-size: 300% 300%;
+    z-index: -1;
+    animation: borderGlow 4s ease-in-out infinite;
+    opacity: 0.4;
+}
+
+@keyframes borderGlow {
+    0%, 100% { background-position: 0% 50%; opacity: 0.4; }
+    50% { background-position: 100% 50%; opacity: 0.7; }
+}
+
+/* --- Step Entrance Animations --- */
+.step.active .welcome-card {
+    animation: cardEntrance 0.8s ease-out;
+}
+
+.step.active .envelope-container {
+    animation: cardEntrance 0.8s ease-out, pulse 2s 0.8s infinite;
+}
+
+@keyframes cardEntrance {
+    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 /* --- Balloons Animation --- */
 .balloons-container {
@@ -557,26 +822,159 @@ body {
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
+    .welcome-card {
+        padding: 30px 20px;
+        margin: 20px;
+        max-width: 90vw;
+    }
     .welcome-title { font-size: 2.5rem; }
     .welcome-message { font-size: 1rem; }
     .letter p { font-size: 1rem; }
-    .main-greeting { font-size: 2rem; }
-    .recipient-name { font-size: 3.5rem; }
+    .sub-greeting { font-size: 1rem; }
     .final-wish { font-size: 1rem; }
     .signature { font-size: 1.5rem; }
+    
+    .celebration-card {
+        padding: 25px 20px;
+        margin: 15px;
+        max-width: 90vw;
+    }
+    
     .cake { transform: scale(0.8); }
-    .letter { width: 90%; padding: 20px; }
-    .envelope { transform: scale(0.8); } /* Scale down envelope */
+    .letter { width: 90%; padding: 25px 20px; }
+    .envelope { transform: scale(0.8); }
+    
+    .balloon {
+        width: 50px;
+        height: 65px;
+    }
+    .balloon::after {
+        height: 50px;
+    }
 }
 
 @media (max-width: 480px) {
-    .welcome-title { font-size: 2rem; }
+    .welcome-card {
+        padding: 25px 16px;
+        margin: 15px;
+    }
+    .welcome-title { 
+        font-size: clamp(1.8rem, 8vw, 2rem); 
+    }
     .welcome-message { font-size: 0.9rem; }
-    .action-button { padding: 10px 20px; font-size: 1rem; }
-    .main-greeting { font-size: 1.8rem; }
-    .recipient-name { font-size: 2.8rem; }
-    .final-wish { font-size: 0.9rem; }
+    .action-button { 
+        padding: 10px 20px; 
+        font-size: 1rem; 
+        width: 100%;
+        max-width: 280px;
+    }
+    .sub-greeting { font-size: 0.9rem; }
+    .final-wish { 
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
     .signature { font-size: 1.2rem; }
-    .cake { transform: scale(0.7); }
-    .envelope { transform: scale(0.7); } /* Even smaller envelope */
+    
+    .celebration-card {
+        padding: 20px 14px;
+        margin: 12px;
+        border-radius: 16px;
+        max-width: 95vw;
+    }
+    
+    .cake { transform: scale(0.65); }
+    .cake-container { margin: 15px auto; }
+    .envelope { 
+        width: min(80vw, 320px);
+        height: auto;
+        aspect-ratio: 320 / 200;
+    }
+    .envelope-seal {
+        width: min(10vw, 40px);
+        height: min(10vw, 40px);
+        top: 38%;
+    }
+    .envelope-flap {
+        height: 45%;
+    }
+    .letter {
+        width: 92%;
+        padding: 20px 16px;
+    }
+    .letter p { font-size: 0.95rem; }
+    .letter p:first-child { font-size: 1.1rem; }
+    
+    .click-instruction { font-size: 0.9rem; }
+    
+    .made-by { font-size: 0.8rem; }
+    .heart-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .balloon {
+        width: 40px;
+        height: 55px;
+    }
+    .balloon::after {
+        height: 40px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .welcome-title { font-size: 1.6rem; }
+    .recipient-name { font-size: 2.2rem; }
+    .main-greeting { 
+        font-size: 1.3rem;
+        max-width: 85vw;
+    }
+    .final-wish { font-size: 0.85rem; padding: 12px 14px; }
+    .signature { font-size: 1rem; }
+    .cake { transform: scale(0.5); }
+    .celebration-card { padding: 15px 10px; }
+    .letter { padding: 15px 12px; }
+    .candle-message { font-size: 1.2rem; }
+}
+
+/* --- Touch Device Optimizations --- */
+@media (hover: none) and (pointer: coarse) {
+    .action-button:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    }
+    
+    .envelope-container {
+        animation: pulse 2.5s infinite;
+    }
+}
+
+/* --- Audio Play Button (shown when autoplay fails on mobile) --- */
+.audio-play-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--accent-purple), var(--primary-red));
+    color: var(--text-light);
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.audio-play-button:active {
+    transform: scale(0.92);
+}
+
+.audio-play-button.visible {
+    display: flex;
 }
