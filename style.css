@@ -160,8 +160,8 @@ body {
     position: absolute;
     width: 40px;
     height: 40px;
-    /* Base64 for a simple heart SVG icon (red) */
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2U5NDU2MCI+PHBhdGggZD0iTTEyIDYuMjc1Yy01LjUwMy01LjgyOC0xNC40NDUgMi41NDctNi40NDUgOS42NDcgNC44MjcgNC44MjcgOS4xMjcgMi40NTcgMTIgMi41MjEgMi44NzMtLjA2NCA3LjE3MyAyLjMwMyAxMi0yLjUyMSAxMi03LjA4IDcuNjA4LTExLjQ4NSAyLjc1NS0xMS43OTJjLTcuOTk5LTcuMzk5LTMuMzk1LTkuNzE0LTYuNDQ1LTkuNjQ3eiIvPjwvc3ZnPg==');
+    /* Base64 for a simple heart SVG icon (white) */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTEyIDYuMjc1Yy01LjUwMy01LjgyOC0xNC40NDUgMi41NDctNi40NDUgOS42NDcgNC44MjcgNC44MjcgOS4xMjcgMi40NTcgMTIgMi41MjEgMi44NzMtLjA2NCA3LjE3MyAyLjMwMyAxMi0yLjUyMSAxMi03LjA4IDcuNjA4LTExLjQ4NSAyLjc1NS0xMS43OTJjLTcuOTk5LTcuMzk5LTMuMzk1LTkuNzE0LTYuNDQ1LTkuNjQ3eiIvPjwvc3ZnPg==');
     background-size: cover;
     top: 80px;
     left: 50%;
@@ -309,11 +309,19 @@ body {
     align-items: center;
 }
 
+.made-by {
+    font-size: 0.9rem;
+    margin-top: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+}
+
 .heart-icon {
     width: 25px;
     height: 25px;
     margin-left: 10px;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2U5NDU2MCI+PHBhdGggZD0iTTEyIDYuMjc1Yy01LjUwMy01LjgyOC0xNC40NDUgMi41NDctNi40NDUgOS42NDcgNC44MjcgNC44MjcgOS4xMjcgMi40NTcgMTIgMi41MjEgMi44NzMtLjA2NCA3LjE3MyAyLjMwMyAxMi0yLjUyMSAxMi03LjA4IDcuNjA4LTExLjQ4NSAyLjc1NS0xMS43OTJjLTcuOTk5LTcuMzk5LTMuMzk1LTkuNzE0LTYuNDQ1LTkuNjQ3eiIvPjwvc3ZnPg==');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTEyIDYuMjc1Yy01LjUwMy01LjgyOC0xNC40NDUgMi41NDctNi40NDUgOS42NDcgNC44MjcgNC44MjcgOS4xMjcgMi40NTcgMTIgMi41MjEgMi44NzMtLjA2NCA3LjE3MyAyLjMwMyAxMi0yLjUyMSAxMi03LjA4IDcuNjA4LTExLjQ4NSAyLjc1NS0xMS43OTJjLTcuOTk5LTcuMzk5LTMuMzk1LTkuNzE0LTYuNDQ1LTkuNjQ3eiIvPjwvc3ZnPg==');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
