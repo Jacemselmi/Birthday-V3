@@ -31,7 +31,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-purple) 40%, var(--bg-light) 100%);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.92) 0%, rgba(45, 27, 78, 0.92) 40%, rgba(22, 33, 62, 0.92) 100%),
+                url('nour.jpeg') center / cover;
     color: var(--text-light);
     display: flex;
     justify-content: center;
